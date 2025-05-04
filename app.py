@@ -92,37 +92,38 @@ if submitted:
     y_pred_scaled = model.predict(X_scaled)
     y_pred = scaler_y.inverse_transform(y_pred_scaled)[0]
 
+    
     results_data = []
     reuse_safe = True
 
     for i, var in enumerate(output_vars):
         predicted = y_pred[i]
         unit = units[var]
+
         if var in limits:
             limit = limits[var]
+            limit_str = f"≤ {limit}"
             if predicted <= limit:
                 status = "✅ OK"
             else:
                 status = "❌ Exceeds Limit"
                 reuse_safe = False
         else:
-            limit = "--"
+            limit_str = "--"
             status = "--"
+
         results_data.append([
             var.replace('_', ' ').capitalize(), 
             round(predicted, 3), 
-            limit, 
+            limit_str, 
             unit, 
             status
         ])
 
-    results_df = pd.DataFrame(results_data, columns=["Parameter", "Predicted Value", "Standard Limit", "Unit", "Assessment"])
+    results_df = pd.DataFrame(results_data, columns=[
+        "Parameter", "Predicted Value", "Standard Limit", "Unit", "Assessment"
+    ])
 
     st.subheader("🔍 Predicted Treated Water Quality")
     st.dataframe(results_df)
 
-    st.subheader("♻️ Reuse Decision")
-    if reuse_safe:
-        st.success("✅ Water is safe for reuse or discharge.")
-    else:
-        st.error("❌ Water does NOT meet quality standards for reuse.")
