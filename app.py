@@ -1,5 +1,18 @@
 import streamlit as st
 from PIL import Image
+st.markdown("""
+    <style>
+        .app-container {
+            border: 2px solid #4CAF50;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px;
+            background-color: #ffffff;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+    <div class="app-container">
+""", unsafe_allow_html=True)
 
 # Load and display the logo
 logo = Image.open("ttu_logo.png")
@@ -51,18 +64,12 @@ st.title("Water Treatment Quality Predictor (ANN-based)")
 st.markdown("Enter experimental values below to predict treated water quality and assess reuse suitability.")
 
 # Input form
-with st.form("input_form"):
-    pH = st.slider('pH', min_value=5.0, max_value=9.0, value=7.0, step=0.1, format="%.1f")
-TSS = st.slider('Total Suspended Solids (TSS) [mg/L]', min_value=1, max_value=1000, value=100, step=1)
-Turbidity = st.slider('Turbidity [NTU]', min_value=1.0, max_value=500.0, value=50.0, step=1.0)
-Temperature = st.slider('Temperature [°C]', min_value=5.0, max_value=50.0, value=25.0, step=0.5)
-COD = st.slider('Chemical Oxygen Demand (COD) [mg/L]', min_value=10, max_value=1000, value=200, step=10)
-BOD = st.slider('Biological Oxygen Demand (BOD) [mg/L]', min_value=5, max_value=600, value=150, step=5)
+with st.form("input_form")
 
-    pH_raw = st.number_input("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
-    turbidity_raw = st.number_input("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
-    temperature = st.number_input("Temperature (°C) from 0 to 50", 5.0, 40.0, 25.0)
-    coagulant_dose = st.number_input("Coagulant Dose (mg/L) from 0 to 100", 0.0, 100.0, 30.0)
+    pH_raw = st.slider("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
+    turbidity_raw = st.slider("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
+    temperature = st.slider("Temperature (°C) from 0 to 50", 5.0, 40.0, 25.0)
+    coagulant_dose = st.slider("Coagulant Dose (mg/L) from 0 to 100", 0.0, 100.0, 30.0)
     flocculant_dose = st.slider("Flocculant Dose (mg/L)", 0.0, 20.0, 5.0)
     fe_initial = st.slider("Initial Fe (mg/L)", 0.0, 10.0, 1.0)
     mn_initial = st.slider("Initial Mn (mg/L)", 0.0, 5.0, 0.3)
@@ -75,7 +82,7 @@ BOD = st.slider('Biological Oxygen Demand (BOD) [mg/L]', min_value=5, max_value=
     slow_mix = st.slider("Slow Mix Time (min)", 1.0, 30.0, 10.0)
     settling_time = st.slider("Settling Time (min)", 5.0, 60.0, 30.0)
 
-    submitted = st.form_submit_button("Predict Water Quality")
+    submitted = st.form_submit_button("Test Water Quality")
 
 if submitted:
     input_array = np.array([[pH_raw, turbidity_raw, temperature, coagulant_dose, flocculant_dose,
