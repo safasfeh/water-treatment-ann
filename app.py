@@ -1,10 +1,11 @@
+pip install fpdf
+
 import streamlit as st
 from PIL import Image
 import numpy as np
 import pandas as pd
 import joblib
 from tensorflow.keras.models import load_model
-pip install fpdf
 from fpdf import FPDF
 import base64
 
