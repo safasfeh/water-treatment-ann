@@ -1,18 +1,5 @@
 import streamlit as st
 from PIL import Image
-st.markdown("""
-    <style>
-        .app-container {
-            border: 2px solid #4CAF50;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px;
-            background-color: #ffffff;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-        }
-    </style>
-    <div class="app-container">
-""", unsafe_allow_html=True)
 
 # Load and display the logo
 logo = Image.open("ttu_logo.png")
