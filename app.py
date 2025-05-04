@@ -52,6 +52,14 @@ st.markdown("Enter experimental values below to predict treated water quality an
 
 # Input form
 with st.form("input_form"):
+    pH = st.slider(
+    'pH',
+    min_value=5.0,
+    max_value=9.0,
+    value=7.0,
+    step=0.1,
+    format="%.1f"
+)
     pH_raw = st.number_input("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
     turbidity_raw = st.number_input("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
     temperature = st.number_input("Temperature (°C) from 0 to 50", 5.0, 40.0, 25.0)
