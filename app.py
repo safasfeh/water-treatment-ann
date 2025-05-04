@@ -64,7 +64,7 @@ st.title("Water Treatment Quality Predictor (ANN-based)")
 st.markdown("Enter experimental values below to predict treated water quality and assess reuse suitability.")
 
 # Input form
-with st.form("input_form")
+with st.form("input_form"):
 
     pH_raw = st.slider("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
     turbidity_raw = st.slider("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
