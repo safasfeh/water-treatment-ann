@@ -3,7 +3,7 @@ from PIL import Image
 
 # Load and display the logo
 logo = Image.open("ttu_logo.png")
-st.image(logo, width=1000)  # Adjust width as needed
+st.image(logo, width=900)  # Adjust width as needed
 
 # Title and team info
 st.markdown("""
