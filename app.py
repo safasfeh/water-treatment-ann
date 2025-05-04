@@ -47,7 +47,7 @@ limits = {
 }
 
 # App layout
-st.title("💧 Water Treatment Quality Predictor (ANN-based)")
+st.title("Water Treatment Quality Predictor (ANN-based)")
 st.markdown("Enter experimental values below to predict treated water quality and assess reuse suitability.")
 
 # Input form
@@ -98,10 +98,10 @@ if submitted:
     assessment += ["--"] * 3
     results['Assessment'] = assessment
 
-    st.subheader("🧪 Predicted Treated Water Quality")
+    st.subheader("Predicted Treated Water Quality")
     st.dataframe(results.style.format(precision=3))
 
-    st.subheader("📝 Reuse Decision")
+    st.subheader("Reuse Decision")
     if reuse_safe:
         st.success("✅ Water is safe for reuse or discharge.")
     else:
