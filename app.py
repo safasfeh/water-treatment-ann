@@ -1,28 +1,25 @@
-# Updated Streamlit app code with improved reuse evaluation and formatting
 import streamlit as st
-from PIL import Image
 import numpy as np
 import pandas as pd
 import joblib
 from tensorflow.keras.models import load_model
+from PIL import Image
 
 # Load and display the logo
 logo = Image.open("ttu_logo.png")
 st.image(logo, width=900)
 
-# Title and team info
+# Header
 st.markdown("""
-<div style='border: 2px solid #4CAF50; padding: 15px; border-radius: 10px; background-color: #f9f9f9;'>
-    <h2 style='text-align: center; color: navy;'>Graduation Project II</h2>
-    <h3 style='text-align: center; color: darkgreen;'>College of Engineering / Natural Resources and Chemical Engineering Department</h3>
-    <h4 style='text-align: center;'>Tafila Technical University</h4>
-    <h5 style='text-align: center; color: gray;'>Designed and implemented by students:</h5>
-    <ul style='text-align: center; list-style: none; padding-left: 0;'>
-        <li>1 - Duaa</li>
-        <li>2 - Shahed</li>
-        <li>3 - Rahaf</li>
-    </ul>
-</div>
+<h2 style='text-align: center; color: navy;'>Graduation Project II</h2>
+<h3 style='text-align: center; color: darkgreen;'>College of Engineering / Natural Resources and Chemical Engineering Department</h3>
+<h4 style='text-align: center;'>Tafila Technical University</h4>
+<h5 style='text-align: center; color: gray;'>Designed and implemented by students:</h5>
+<ul style='text-align: center; list-style: none; padding-left: 0;'>
+    <li>1 - Duaa</li>
+    <li>2 - Shahed</li>
+    <li>3 - Rahaf</li>
+</ul>
 """, unsafe_allow_html=True)
 
 # Load model and scalers
@@ -30,13 +27,14 @@ scaler_X = joblib.load('scaler_X.pkl')
 scaler_y = joblib.load('scaler_y.pkl')
 model = load_model('ann_water_model.h5')
 
+# Output variables
 output_vars = [
     'Turbidity_final_NTU', 'Fe_final_mg_L', 'Mn_final_mg_L', 'Cu_final_mg_L',
     'Zn_final_mg_L', 'Suspended_solids_final_mg_L', 'TDS_final_mg_L',
     'Turbidity_removal_%', 'Suspended_solids_removal_%', 'TDS_removal_%'
 ]
 
-# Reuse limits
+# Reuse standards
 limits = {
     'Turbidity_final_NTU': 5.0,
     'Fe_final_mg_L': 0.3,
@@ -47,14 +45,29 @@ limits = {
     'TDS_final_mg_L': 1000.0
 }
 
-st.title("Water Treatment Quality Predictor (ANN-based)")
+units = {
+    'Turbidity_final_NTU': 'NTU',
+    'Fe_final_mg_L': 'mg/L',
+    'Mn_final_mg_L': 'mg/L',
+    'Cu_final_mg_L': 'mg/L',
+    'Zn_final_mg_L': 'mg/L',
+    'Suspended_solids_final_mg_L': 'mg/L',
+    'TDS_final_mg_L': 'mg/L',
+    'Turbidity_removal_%': '%',
+    'Suspended_solids_removal_%': '%',
+    'TDS_removal_%': '%'
+}
+
+# App title and description
+st.title("💧 Water Treatment Quality Predictor (ANN-based)")
 st.markdown("Enter experimental values below to predict treated water quality and assess reuse suitability.")
 
+# Input form
 with st.form("input_form"):
-    pH_raw = st.slider("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
-    turbidity_raw = st.slider("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
-    temperature = st.slider("Temperature (°C) from 0 to 50", 5.0, 40.0, 25.0)
-    coagulant_dose = st.slider("Coagulant Dose (mg/L) from 0 to 100", 0.0, 100.0, 30.0)
+    pH_raw = st.slider("pH of Raw Water", 3.0, 11.0, 7.0)
+    turbidity_raw = st.slider("Turbidity (NTU)", 0.1, 500.0, 50.0)
+    temperature = st.slider("Temperature (°C)", 0.0, 50.0, 25.0)
+    coagulant_dose = st.slider("Coagulant Dose (mg/L)", 0.0, 100.0, 30.0)
     flocculant_dose = st.slider("Flocculant Dose (mg/L)", 0.0, 20.0, 5.0)
     fe_initial = st.slider("Initial Fe (mg/L)", 0.0, 10.0, 1.0)
     mn_initial = st.slider("Initial Mn (mg/L)", 0.0, 5.0, 0.3)
@@ -69,40 +82,47 @@ with st.form("input_form"):
 
     submitted = st.form_submit_button("Test Water Quality")
 
+# Prediction and results
 if submitted:
     input_array = np.array([[pH_raw, turbidity_raw, temperature, coagulant_dose, flocculant_dose,
                              fe_initial, mn_initial, cu_initial, zn_initial, ss, tds,
                              mixing_speed, rapid_mix, slow_mix, settling_time]])
-
-    # Predict
+    
     X_scaled = scaler_X.transform(input_array)
     y_pred_scaled = model.predict(X_scaled)
     y_pred = scaler_y.inverse_transform(y_pred_scaled)[0]
 
-    # Output table
-    results = pd.DataFrame([y_pred], columns=output_vars).T
-    results.columns = ['Predicted Value']
-    results['Unit'] = ['NTU', 'mg/L', 'mg/L', 'mg/L', 'mg/L', 'mg/L', 'mg/L', '%', '%', '%']
-
-    # Assess
-    assessment = []
+    results_data = []
     reuse_safe = True
-    for i, var in enumerate(output_vars[:7]):
-        value = y_pred[i]
-        if value <= limits[var]:
-            assessment.append("✅ OK")
+
+    for i, var in enumerate(output_vars):
+        predicted = y_pred[i]
+        unit = units[var]
+        if var in limits:
+            limit = limits[var]
+            if predicted <= limit:
+                status = "✅ OK"
+            else:
+                status = "❌ Exceeds Limit"
+                reuse_safe = False
         else:
-            assessment.append("❌ Exceeds Limit")
-            reuse_safe = False
-    assessment += ["--"] * 3
-    results['Assessment'] = assessment
+            limit = "--"
+            status = "--"
+        results_data.append([
+            var.replace('_', ' ').capitalize(), 
+            round(predicted, 3), 
+            limit, 
+            unit, 
+            status
+        ])
 
-    st.subheader("Predicted Treated Water Quality")
-    st.dataframe(results.style.format(precision=3))
+    results_df = pd.DataFrame(results_data, columns=["Parameter", "Predicted Value", "Standard Limit", "Unit", "Assessment"])
 
-    st.subheader("Reuse Decision")
+    st.subheader("🔍 Predicted Treated Water Quality")
+    st.dataframe(results_df)
+
+    st.subheader("♻️ Reuse Decision")
     if reuse_safe:
         st.success("✅ Water is safe for reuse or discharge.")
     else:
         st.error("❌ Water does NOT meet quality standards for reuse.")
-
