@@ -3,18 +3,18 @@ from PIL import Image
 
 # Load and display the logo
 logo = Image.open("ttu_logo.png")
-st.image(logo, width=150)  # Adjust width as needed
+st.image(logo, width=1000)  # Adjust width as needed
 
 # Title and team info
 st.markdown("""
 <h2 style='text-align: center; color: navy;'>Graduation Project II</h2>
-<h3 style='text-align: center; color: darkgreen;'>Department of Industrial Chemical Engineering</h3>
+<h3 style='text-align: center; color: darkgreen;'>College of Engineering/The Natural Resources and Chemical Engineering Department</h3>
 <h4 style='text-align: center;'>Tafila Technical University</h4>
-<h5 style='text-align: center; color: gray;'>Designed and implemented by:</h5>
+<h5 style='text-align: center; color: gray;'>Designed and implemented by students:</h5>
 <ul style='text-align: center; list-style: none; padding-left: 0;'>
-    <li>1 - XXXXX</li>
-    <li>2 - XXXXX</li>
-    <li>3 - XXXXX</li>
+    <li>1 - Duaa</li>
+    <li>2 - Shahed</li>
+    <li>3 - Rahaf</li>
 </ul>
 """, unsafe_allow_html=True)
 
