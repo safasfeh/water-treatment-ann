@@ -1,30 +1,31 @@
+# Updated Streamlit app code with improved reuse evaluation and formatting
 import streamlit as st
 from PIL import Image
-
-# Load and display the logo
-logo = Image.open("ttu_logo.png")
-st.image(logo, width=900)  # Adjust width as needed
-
-# Title and team info
-st.markdown("""
-<h2 style='text-align: center; color: navy;'>Graduation Project II</h2>
-<h3 style='text-align: center; color: darkgreen;'>College of Engineering/The Natural Resources and Chemical Engineering Department</h3>
-<h4 style='text-align: center;'>Tafila Technical University</h4>
-<h5 style='text-align: center; color: gray;'>Designed and implemented by students:</h5>
-<ul style='text-align: center; list-style: none; padding-left: 0;'>
-    <li>1 - Duaa</li>
-    <li>2 - Shahed</li>
-    <li>3 - Rahaf</li>
-</ul>
-""", unsafe_allow_html=True)
-
-import streamlit as st
 import numpy as np
 import pandas as pd
 import joblib
 from tensorflow.keras.models import load_model
 
-# Load scalers and model
+# Load and display the logo
+logo = Image.open("ttu_logo.png")
+st.image(logo, width=900)
+
+# Title and team info
+st.markdown("""
+<div style='border: 2px solid #4CAF50; padding: 15px; border-radius: 10px; background-color: #f9f9f9;'>
+    <h2 style='text-align: center; color: navy;'>Graduation Project II</h2>
+    <h3 style='text-align: center; color: darkgreen;'>College of Engineering / Natural Resources and Chemical Engineering Department</h3>
+    <h4 style='text-align: center;'>Tafila Technical University</h4>
+    <h5 style='text-align: center; color: gray;'>Designed and implemented by students:</h5>
+    <ul style='text-align: center; list-style: none; padding-left: 0;'>
+        <li>1 - Duaa</li>
+        <li>2 - Shahed</li>
+        <li>3 - Rahaf</li>
+    </ul>
+</div>
+""", unsafe_allow_html=True)
+
+# Load model and scalers
 scaler_X = joblib.load('scaler_X.pkl')
 scaler_y = joblib.load('scaler_y.pkl')
 model = load_model('ann_water_model.h5')
@@ -46,13 +47,10 @@ limits = {
     'TDS_final_mg_L': 1000.0
 }
 
-# App layout
 st.title("Water Treatment Quality Predictor (ANN-based)")
 st.markdown("Enter experimental values below to predict treated water quality and assess reuse suitability.")
 
-# Input form
 with st.form("input_form"):
-
     pH_raw = st.slider("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
     turbidity_raw = st.slider("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
     temperature = st.slider("Temperature (°C) from 0 to 50", 5.0, 40.0, 25.0)
@@ -75,7 +73,7 @@ if submitted:
     input_array = np.array([[pH_raw, turbidity_raw, temperature, coagulant_dose, flocculant_dose,
                              fe_initial, mn_initial, cu_initial, zn_initial, ss, tds,
                              mixing_speed, rapid_mix, slow_mix, settling_time]])
-    
+
     # Predict
     X_scaled = scaler_X.transform(input_array)
     y_pred_scaled = model.predict(X_scaled)
@@ -85,8 +83,8 @@ if submitted:
     results = pd.DataFrame([y_pred], columns=output_vars).T
     results.columns = ['Predicted Value']
     results['Unit'] = ['NTU', 'mg/L', 'mg/L', 'mg/L', 'mg/L', 'mg/L', 'mg/L', '%', '%', '%']
-    
-    # Assessment
+
+    # Assess
     assessment = []
     reuse_safe = True
     for i, var in enumerate(output_vars[:7]):
@@ -107,3 +105,4 @@ if submitted:
         st.success("✅ Water is safe for reuse or discharge.")
     else:
         st.error("❌ Water does NOT meet quality standards for reuse.")
+
