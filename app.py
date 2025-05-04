@@ -1,3 +1,22 @@
+import streamlit as st
+from PIL import Image
+
+# Load and display the logo
+logo = Image.open("ttu_logo.png")
+st.image(logo, width=150)  # Adjust width as needed
+
+# Title and team info
+st.markdown("""
+<h2 style='text-align: center; color: navy;'>Graduation Project II</h2>
+<h3 style='text-align: center; color: darkgreen;'>Department of Industrial Chemical Engineering</h3>
+<h4 style='text-align: center;'>Tafila Technical University</h4>
+<h5 style='text-align: center; color: gray;'>Designed and implemented by:</h5>
+<ul style='text-align: center; list-style: none; padding-left: 0;'>
+    <li>1 - XXXXX</li>
+    <li>2 - XXXXX</li>
+    <li>3 - XXXXX</li>
+</ul>
+""", unsafe_allow_html=True)
 
 import streamlit as st
 import numpy as np
@@ -33,10 +52,10 @@ st.markdown("Enter experimental values below to predict treated water quality an
 
 # Input form
 with st.form("input_form"):
-    pH_raw = st.number_input("pH of Raw Water", 3.0, 11.0, 7.0)
-    turbidity_raw = st.number_input("Turbidity (NTU)", 0.1, 500.0, 50.0)
-    temperature = st.number_input("Temperature (°C)", 5.0, 40.0, 25.0)
-    coagulant_dose = st.number_input("Coagulant Dose (mg/L)", 0.0, 100.0, 30.0)
+    pH_raw = st.number_input("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
+    turbidity_raw = st.number_input("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
+    temperature = st.number_input("Temperature (°C) from 0 to 50", 5.0, 40.0, 25.0)
+    coagulant_dose = st.number_input("Coagulant Dose (mg/L) from 0 to 100", 0.0, 100.0, 30.0)
     flocculant_dose = st.slider("Flocculant Dose (mg/L)", 0.0, 20.0, 5.0)
     fe_initial = st.slider("Initial Fe (mg/L)", 0.0, 10.0, 1.0)
     mn_initial = st.slider("Initial Mn (mg/L)", 0.0, 5.0, 0.3)
