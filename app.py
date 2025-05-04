@@ -52,14 +52,13 @@ st.markdown("Enter experimental values below to predict treated water quality an
 
 # Input form
 with st.form("input_form"):
-    pH = st.slider(
-    'pH',
-    min_value=5.0,
-    max_value=9.0,
-    value=7.0,
-    step=0.1,
-    format="%.1f"
-)
+    pH = st.slider('pH', min_value=5.0, max_value=9.0, value=7.0, step=0.1, format="%.1f")
+TSS = st.slider('Total Suspended Solids (TSS) [mg/L]', min_value=1, max_value=1000, value=100, step=1)
+Turbidity = st.slider('Turbidity [NTU]', min_value=1.0, max_value=500.0, value=50.0, step=1.0)
+Temperature = st.slider('Temperature [°C]', min_value=5.0, max_value=50.0, value=25.0, step=0.5)
+COD = st.slider('Chemical Oxygen Demand (COD) [mg/L]', min_value=10, max_value=1000, value=200, step=10)
+BOD = st.slider('Biological Oxygen Demand (BOD) [mg/L]', min_value=5, max_value=600, value=150, step=5)
+
     pH_raw = st.number_input("pH of Raw Water from 3 to 11", 3.0, 11.0, 7.0)
     turbidity_raw = st.number_input("Turbidity (NTU) from 0.1 to 500", 0.1, 500.0, 50.0)
     temperature = st.number_input("Temperature (°C) from 0 to 50", 5.0, 40.0, 25.0)
