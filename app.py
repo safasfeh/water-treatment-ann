@@ -33,10 +33,10 @@ st.markdown("Enter experimental values below to predict treated water quality an
 
 # Input form
 with st.form("input_form"):
-    pH_raw = st.slider("pH of Raw Water", 3.0, 11.0, 7.0)
-    turbidity_raw = st.slider("Turbidity (NTU)", 0.1, 500.0, 50.0)
-    temperature = st.slider("Temperature (°C)", 5.0, 40.0, 25.0)
-    coagulant_dose = st.slider("Coagulant Dose (mg/L)", 0.0, 100.0, 30.0)
+    pH_raw = st.number_input("pH of Raw Water", 3.0, 11.0, 7.0)
+    turbidity_raw = st.number_input("Turbidity (NTU)", 0.1, 500.0, 50.0)
+    temperature = st.number_input("Temperature (°C)", 5.0, 40.0, 25.0)
+    coagulant_dose = st.number_input("Coagulant Dose (mg/L)", 0.0, 100.0, 30.0)
     flocculant_dose = st.slider("Flocculant Dose (mg/L)", 0.0, 20.0, 5.0)
     fe_initial = st.slider("Initial Fe (mg/L)", 0.0, 10.0, 1.0)
     mn_initial = st.slider("Initial Mn (mg/L)", 0.0, 5.0, 0.3)
