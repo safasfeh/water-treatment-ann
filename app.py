@@ -124,6 +124,10 @@ if submitted:
         "Parameter", "Predicted Value", "Standard Limit", "Unit", "Assessment"
     ])
 
-    st.subheader("🔍 Predicted Treated Water Quality")
+    st.subheader("Predicted Treated Water Quality")
     st.dataframe(results_df)
-
+st.subheader(" Reuse Decision")
+    if reuse_safe:
+        st.success("✅ Water is safe for reuse or discharge.")
+    else:
+        st.error("❌ Water does NOT meet quality standards for reuse.")
