@@ -25,9 +25,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Load model and scalers
-scaler_X_2 = joblib.load('scaler_X_2.pkl')
-scaler_y_2 = joblib.load('scaler_y_2.pkl')
-model = load_model('ann_water_model_2.h5')
+scaler_X = joblib.load('scaler_X.pkl')
+scaler_y = joblib.load('scaler_y.pkl')
+model = load_model('ann_water_model.h5')
 
 # Output variable labels
 output_vars = [
@@ -77,9 +77,9 @@ if submitted:
                              fe_initial, mn_initial, cu_initial, zn_initial, ss, tds
                             ]])
     
-    X_scaled = scaler_X_2.transform(input_array)
+    X_scaled = scaler_X.transform(input_array)
     y_pred_scaled = model.predict(X_scaled)
-    y_pred = scaler_y_2.inverse_transform(y_pred_scaled)[0]
+    y_pred = scaler_y.inverse_transform(y_pred_scaled)[0]
 
     # Results formatting
     results = pd.DataFrame([y_pred], columns=output_vars).T
