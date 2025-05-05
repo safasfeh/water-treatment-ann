@@ -25,9 +25,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Load model and scalers
-scaler_X = joblib.load('scaler_X.pkl')
-scaler_y = joblib.load('scaler_y.pkl')
-model = load_model('ann_water_model.h5')
+scaler_X = joblib.load('scaler_X_2.pkl')
+scaler_y = joblib.load('scaler_y_2.pkl')
+model = load_model('ann_water_model_2.h5')
 
 # Output variable labels
 output_vars = [
